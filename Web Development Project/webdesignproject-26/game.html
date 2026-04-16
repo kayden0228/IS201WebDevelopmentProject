@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess the Number | Kayden Glauser</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* =============================================
+       game.html — Number Guessing Game
+       All styles, HTML, and JS in one file
+       ============================================= */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* --- Top Nav Bar --- */
+    .game-nav {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .game-nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .game-nav a:hover { color: #a78bfa; }
+
+    .game-nav .brand {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* --- Main Game Card --- */
+    .game-wrapper {
+      width: 100%;
+      max-width: 500px;
+      padding: 40px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* Emoji Icon */
+    .game-icon {
+      font-size: 4rem;
+      margin-bottom: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    /* Title */
+    .game-title {
+      color: #ffffff;
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .game-subtitle {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    /* --- Game Card --- */
+    .game-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 36px 32px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    /* Range label */
+    .range-label {
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 22px;
+    }
+
+    /* Attempts + hint row */
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .attempts-badge {
+      background: rgba(167,139,250,0.18);
+      color: #a78bfa;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(167,139,250,0.3);
+    }
+
+    .hint-text {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.82rem;
+      font-style: italic;
+    }
+
+    /* Input field */
+    .guess-input {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      padding: 16px 20px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 16px;
+      -moz-appearance: textfield;
+    }
+
+    .guess-input::-webkit-outer-spin-button,
+    .guess-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .guess-input::placeholder { color: rgba(255,255,255,0.25); }
+
+    .guess-input:focus {
+      border-color: #a78bfa;
+      background: rgba(255,255,255,0.11);
+    }
+
+    /* Guess Button */
+    .guess-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+      box-shadow: 0 6px 25px rgba(124,58,237,0.4);
+    }
+
+    .guess-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 35px rgba(124,58,237,0.55);
+    }
+
+    .guess-btn:active:not(:disabled) { transform: translateY(0); }
+
+    .guess-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Feedback message */
+    .feedback {
+      margin-top: 22px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 700;
+      display: none;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .feedback.show { display: block; }
+
+    .feedback.too-high {
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.35);
+      color: #fca5a5;
+    }
+
+    .feedback.too-low {
+      background: rgba(59,130,246,0.15);
+      border: 1px solid rgba(59,130,246,0.35);
+      color: #93c5fd;
+    }
+
+    .feedback.correct {
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.35);
+      color: #86efac;
+    }
+
+    .feedback.invalid {
+      background: rgba(234,179,8,0.12);
+      border: 1px solid rgba(234,179,8,0.3);
+      color: #fde68a;
+    }
+
+    /* Progress bar */
+    .progress-section {
+      margin-top: 22px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* Previous guesses */
+    .guesses-section {
+      margin-top: 20px;
+    }
+
+    .guesses-title {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .guesses-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .guess-chip {
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .guess-chip.high {
+      background: rgba(239,68,68,0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.25);
+    }
+
+    .guess-chip.low {
+      background: rgba(59,130,246,0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+
+    /* Win overlay */
+    .win-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      backdrop-filter: blur(6px);
+    }
+
+    .win-overlay.show {
+      display: flex;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .win-card {
+      background: linear-gradient(135deg, #1a1040, #2d1f6e);
+      border: 1px solid rgba(167,139,250,0.3);
+      border-radius: 28px;
+      padding: 50px 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(60px) scale(0.9); opacity: 0; }
+      to   { transform: translateY(0) scale(1);       opacity: 1; }
+    }
+
+    .win-emoji { font-size: 5rem; margin-bottom: 16px; }
+
+    .win-title {
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .win-message {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .win-message strong { color: #a78bfa; }
+
+    .play-again-btn {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 6px 25px rgba(124,58,237,0.4);
+    }
+
+    .play-again-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 35px rgba(124,58,237,0.55);
+    }
+
+    /* Confetti particles */
+    .confetti-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -20px;
+      border-radius: 2px;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .game-title { font-size: 1.7rem; }
+      .game-card  { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="game-nav">
+    <a href="index.html">← Portfolio</a>
+    <span class="brand">🎯 Kayden Glauser</span>
+    <a href="scratch.html">Travel Page</a>
+  </nav>
+
+  <!-- Confetti container -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <!-- Game Wrapper -->
+  <div class="game-wrapper">
+    <div class="game-icon">🎯</div>
+    <h1 class="game-title">Guess the Number</h1>
+    <p class="game-subtitle">A web app built with HTML, CSS &amp; JavaScript</p>
+
+    <div class="game-card">
+      <p class="range-label">I'm thinking of a number between 1 and 100</p>
+
+      <div class="status-row">
+        <span class="attempts-badge" id="attemptsLabel">Attempts: 0 / 10</span>
+        <span class="hint-text" id="hintText">Make your first guess!</span>
+      </div>
+
+      <input
+        type="number"
+        class="guess-input"
+        id="guessInput"
+        placeholder="?"
+        min="1"
+        max="100"
+        autocomplete="off"
+      />
+
+      <button class="guess-btn" id="guessBtn" onclick="makeGuess()">
+        Submit Guess
+      </button>
+
+      <div class="feedback" id="feedback"></div>
+
+      <!-- Attempts progress bar -->
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Attempts used</span>
+          <span id="progressText">0 / 10</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- Previous guesses -->
+      <div class="guesses-section" id="guessesSection" style="display:none;">
+        <p class="guesses-title">Previous Guesses</p>
+        <div class="guesses-grid" id="guessesGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Win / Game Over Overlay -->
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-card">
+      <div class="win-emoji" id="winEmoji">🎉</div>
+      <h2 class="win-title" id="winTitle">You Got It!</h2>
+      <p class="win-message" id="winMessage"></p>
+      <button class="play-again-btn" onclick="resetGame()">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    //  Number Guessing Game Logic
+    //  AI-assisted single-page web app
+    // ============================================================
+
+    const MAX_ATTEMPTS = 10;
+    let secretNumber  = 0;
+    let attempts      = 0;
+    let gameOver      = false;
+    let previousGuesses = [];
+
+    // Initialize on page load
+    function initGame() {
+      secretNumber     = Math.floor(Math.random() * 100) + 1;
+      attempts         = 0;
+      gameOver         = false;
+      previousGuesses  = [];
+
+      const input = document.getElementById('guessInput');
+      input.value = '';
+      input.disabled = false;
+
+      document.getElementById('guessBtn').disabled = false;
+      document.getElementById('attemptsLabel').textContent = `Attempts: 0 / ${MAX_ATTEMPTS}`;
+      document.getElementById('hintText').textContent = 'Make your first guess!';
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('progressText').textContent = `0 / ${MAX_ATTEMPTS}`;
+      document.getElementById('guessesSection').style.display = 'none';
+      document.getElementById('guessesGrid').innerHTML = '';
+      hideFeedback();
+    }
+
+    function makeGuess() {
+      if (gameOver) return;
+
+      const input = document.getElementById('guessInput');
+      const raw   = input.value.trim();
+      const guess = parseInt(raw, 10);
+
+      // Validate input
+      if (raw === '' || isNaN(guess) || guess < 1 || guess > 100) {
+        showFeedback('⚠️ Please enter a number between 1 and 100.', 'invalid');
+        shakeInput();
+        return;
+      }
+
+      // Check for duplicate
+      if (previousGuesses.includes(guess)) {
+        showFeedback(`You already guessed ${guess}! Try a different number.`, 'invalid');
+        shakeInput();
+        return;
+      }
+
+      attempts++;
+      previousGuesses.push(guess);
+      input.value = '';
+
+      // Update UI
+      updateAttemptsUI();
+      addGuessChip(guess, guess > secretNumber ? 'high' : guess < secretNumber ? 'low' : 'correct');
+
+      // Check result
+      if (guess === secretNumber) {
+        handleWin();
+      } else if (attempts >= MAX_ATTEMPTS) {
+        handleLoss();
+      } else {
+        const diff = Math.abs(guess - secretNumber);
+        const direction = guess > secretNumber ? '📉 Too High!' : '📈 Too Low!';
+        const warmth = diff <= 5 ? '🔥 Very warm!' : diff <= 15 ? '☀️ Getting warmer...' : diff <= 30 ? '🌤 Getting there...' : '🧊 Cold...';
+
+        showFeedback(`${direction} — ${warmth}`, guess > secretNumber ? 'too-high' : 'too-low');
+        document.getElementById('hintText').textContent = guess > secretNumber ? 'Think lower ↓' : 'Think higher ↑';
+      }
+    }
+
+    function handleWin() {
+      gameOver = true;
+      document.getElementById('guessBtn').disabled = true;
+      document.getElementById('guessInput').disabled = true;
+
+      const messages = [
+        `You nailed it in just <strong>${attempts}</strong> ${attempts === 1 ? 'guess' : 'guesses'}! 🏆`,
+        `Incredible! Only <strong>${attempts}</strong> ${attempts === 1 ? 'try' : 'tries'} needed. You're a natural! 🌟`,
+        `🎯 Bullseye! The number was <strong>${secretNumber}</strong> and you found it in ${attempts} guesses.`,
+      ];
+
+      document.getElementById('winEmoji').textContent = attempts <= 3 ? '🏆' : attempts <= 6 ? '🎉' : '✅';
+      document.getElementById('winTitle').textContent = attempts <= 3 ? 'Incredible!' : attempts <= 6 ? 'You Got It!' : 'Close Call!';
+      document.getElementById('winMessage').innerHTML = messages[Math.floor(Math.random() * messages.length)];
+
+      setTimeout(() => {
+        document.getElementById('winOverlay').classList.add('show');
+        launchConfetti();
+      }, 500);
+    }
+
+    function handleLoss() {
+      gameOver = true;
+      document.getElementById('guessBtn').disabled = true;
+      document.getElementById('guessInput').disabled = true;
+
+      document.getElementById('winEmoji').textContent = '😔';
+      document.getElementById('winTitle').textContent = 'Out of Guesses!';
+      document.getElementById('winMessage').innerHTML = `The number was <strong>${secretNumber}</strong>. Better luck next time! You had ${MAX_ATTEMPTS} chances.`;
+
+      setTimeout(() => {
+        document.getElementById('winOverlay').classList.add('show');
+      }, 400);
+    }
+
+    function resetGame() {
+      document.getElementById('winOverlay').classList.remove('show');
+      document.getElementById('confettiContainer').innerHTML = '';
+      initGame();
+    }
+
+    function updateAttemptsUI() {
+      document.getElementById('attemptsLabel').textContent = `Attempts: ${attempts} / ${MAX_ATTEMPTS}`;
+      document.getElementById('progressText').textContent  = `${attempts} / ${MAX_ATTEMPTS}`;
+      const pct = (attempts / MAX_ATTEMPTS) * 100;
+      document.getElementById('progressFill').style.width  = pct + '%';
+
+      // Color the bar based on urgency
+      const fill = document.getElementById('progressFill');
+      if (attempts >= 8)      fill.style.background = 'linear-gradient(90deg, #ef4444, #f87171)';
+      else if (attempts >= 6) fill.style.background = 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+      else                    fill.style.background = 'linear-gradient(90deg, #7c3aed, #a78bfa)';
+    }
+
+    function addGuessChip(guess, type) {
+      document.getElementById('guessesSection').style.display = 'block';
+      const grid  = document.getElementById('guessesGrid');
+      const chip  = document.createElement('span');
+      chip.className = `guess-chip ${type === 'too-high' || type === 'high' ? 'high' : 'low'}`;
+      chip.textContent = guess + (type === 'high' ? ' ↑' : type === 'low' ? ' ↓' : ' ✓');
+      grid.appendChild(chip);
+    }
+
+    function showFeedback(msg, type) {
+      const el = document.getElementById('feedback');
+      el.textContent = '';
+      el.innerHTML   = msg;
+      el.className   = `feedback show ${type}`;
+    }
+
+    function hideFeedback() {
+      document.getElementById('feedback').className = 'feedback';
+    }
+
+    function shakeInput() {
+      const input = document.getElementById('guessInput');
+      input.style.animation = 'none';
+      input.style.borderColor = '#ef4444';
+      setTimeout(() => {
+        input.style.borderColor = '';
+      }, 600);
+    }
+
+    // Allow pressing Enter to submit
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('guessInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') makeGuess();
+      });
+      initGame();
+    });
+
+    // Confetti launcher
+    function launchConfetti() {
+      const container = document.getElementById('confettiContainer');
+      const colors = ['#a78bfa', '#7c3aed', '#f4a261', '#e76f51', '#2a9d8f', '#e9c46a', '#ffffff'];
+
+      for (let i = 0; i < 80; i++) {
+        setTimeout(() => {
+          const piece = document.createElement('div');
+          piece.className = 'confetti-piece';
+          piece.style.left        = Math.random() * 100 + 'vw';
+          piece.style.width       = (Math.random() * 8 + 6) + 'px';
+          piece.style.height      = (Math.random() * 8 + 6) + 'px';
+          piece.style.background  = colors[Math.floor(Math.random() * colors.length)];
+          piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+          const dur = Math.random() * 2 + 2;
+          piece.style.animationDuration  = dur + 's';
+          piece.style.animationDelay     = '0s';
+          container.appendChild(piece);
+          setTimeout(() => piece.remove(), dur * 1000 + 500);
+        }, i * 30);
+      }
+    }
+  </script>
+
+</body>
+</html>

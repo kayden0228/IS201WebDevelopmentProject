@@ -1,0 +1,600 @@
+/* =============================================
+   scratch.css — Custom Stylesheet (NO Bootstrap)
+   Kayden Glauser Travel Page
+   REQUIREMENTS MET:
+   ✅ 4+ style functions
+   ✅ Styles specifying font color
+   ✅ Styles specifying font family
+   ✅ At least 3 divs for positioning/styling
+   ============================================= */
+
+/* ---------- 1. Global Reset & Base Styles ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* STYLE FUNCTION 1: Body — font family + color */
+body {
+  font-family: 'Lato', Arial, sans-serif;   /* Specifies font family */
+  color: #2c3e50;                            /* Specifies font color */
+  background-color: #f5f7fa;
+  line-height: 1.7;
+}
+
+/* ---------- 2. Navigation DIV ---------- */
+/* DIV 1: scratch-nav — top navigation bar */
+.scratch-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: rgba(10, 40, 70, 0.96);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+  padding: 0 20px;
+}
+
+.scratch-nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+}
+
+/* STYLE FUNCTION 2: Nav brand — font family + color */
+.scratch-nav-brand {
+  font-family: 'Playfair Display', Georgia, serif;  /* Specifies font family */
+  color: #ffffff;                                    /* Specifies font color */
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.scratch-nav-links {
+  display: flex;
+  gap: 0;
+  align-items: center;
+}
+
+.scratch-nav-links a {
+  font-family: 'Lato', Arial, sans-serif;  /* Specifies font family */
+  color: rgba(255, 255, 255, 0.85);        /* Specifies font color */
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.scratch-nav-links a:hover {
+  background-color: rgba(42, 157, 143, 0.2);
+  color: #2a9d8f;
+}
+
+/* ---------- 3. Hero Banner DIV ---------- */
+/* DIV 2: hero-banner — full-screen hero with background image */
+.hero-banner {
+  min-height: 100vh;
+  background-image:
+    linear-gradient(to bottom, rgba(10, 30, 60, 0.7) 0%, rgba(10, 40, 70, 0.55) 60%, rgba(5, 15, 35, 0.85) 100%),
+    url('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1600&h=900&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px 40px;
+}
+
+.hero-banner-content {
+  max-width: 750px;
+}
+
+/* STYLE FUNCTION 3: Hero heading — font family + color */
+.hero-banner-content h1 {
+  font-family: 'Playfair Display', Georgia, serif;  /* Specifies font family */
+  color: #ffffff;                                    /* Specifies font color */
+  font-size: 3.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-shadow: 0 3px 15px rgba(0,0,0,0.4);
+  margin-bottom: 20px;
+}
+
+.hero-tagline {
+  font-family: 'Lato', Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.2rem;
+  font-style: italic;
+  margin-bottom: 35px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+.hero-btn {
+  display: inline-block;
+  font-family: 'Lato', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0a2846;
+  background-color: #f4a261;
+  padding: 14px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background-color 0.25s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(244, 162, 97, 0.4);
+}
+
+.hero-btn:hover {
+  background-color: #e76f51;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(231, 111, 81, 0.45);
+}
+
+/* ---------- 4. Table of Contents Section ---------- */
+.toc-section {
+  background-color: #0a2846;
+  padding: 28px 20px;
+}
+
+.toc-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* STYLE FUNCTION 4: TOC heading — font family + color */
+.toc-container h2 {
+  font-family: 'Playfair Display', Georgia, serif;  /* Specifies font family */
+  color: #f4a261;                                    /* Specifies font color */
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  padding: 0;
+}
+
+.toc-list li a {
+  display: inline-block;
+  font-family: 'Lato', Arial, sans-serif;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.88rem;
+  background-color: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.toc-list li a:hover {
+  background-color: #f4a261;
+  color: #0a2846;
+  border-color: #f4a261;
+}
+
+/* ---------- 5. Content Sections DIV ---------- */
+/* DIV 3: content-section — main content wrapper used across all sections */
+.content-section {
+  padding: 70px 20px;
+  background-color: #f5f7fa;
+}
+
+.content-section.alt-bg {
+  background-color: #eef1f7;
+}
+
+.content-box {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* STYLE FUNCTION 5: Section headings — font family + color */
+.section-heading {
+  font-family: 'Playfair Display', Georgia, serif;  /* Specifies font family */
+  color: #0a2846;                                    /* Specifies font color */
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #f4a261;
+  display: inline-block;
+}
+
+.light-heading {
+  color: #ffffff !important;
+}
+
+.section-intro {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #5a6a7a;
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+  max-width: 800px;
+}
+
+.text-center-section {
+  text-align: center;
+}
+
+.text-center-section .section-intro {
+  margin: 0 auto 30px;
+}
+
+/* ---------- 6. About Travel Grid DIV ---------- */
+/* DIV 4: about-travel-grid — two-column flex layout */
+.about-travel-grid {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  margin-top: 30px;
+}
+
+.about-travel-text {
+  flex: 1;
+}
+
+.about-travel-text p {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #2c3e50;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+}
+
+.about-travel-img-wrapper {
+  flex: 0 0 380px;
+  text-align: center;
+}
+
+.travel-photo {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+  border: 4px solid white;
+}
+
+.img-caption {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #888;
+  font-size: 0.82rem;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* ---------- 7. Destinations List ---------- */
+/* STYLE FUNCTION 6: Ordered/nested list — font family + color */
+.destinations-list {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #2c3e50;
+  padding-left: 22px;
+}
+
+.destinations-list > li {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0a2846;
+  margin-bottom: 20px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed #ccc;
+}
+
+/* Unordered sub-list embedded inside ordered list */
+.sub-list {
+  list-style-type: disc;
+  padding-left: 30px;
+  margin-top: 10px;
+}
+
+.sub-list li {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #4a5a6a;
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-bottom: 6px;
+  padding: 4px 0;
+}
+
+/* ---------- 8. Destination Labels & Badges ---------- */
+.destinations-label {
+  font-family: 'Montserrat', 'Lato', Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 30px 0 12px;
+  padding: 6px 16px;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.visited-label {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.dream-label {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.dest-badge {
+  display: inline-block;
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.visited-badge {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.home-badge {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.dream-list {
+  opacity: 0.85;
+}
+
+/* ---------- 9. Marshall Islands Section DIV ---------- */
+/* DIV 6: marshall-section — teal/Pacific ocean themed section */
+.marshall-section {
+  background: linear-gradient(135deg, #0d4f5c 0%, #0a6b7a 40%, #0d5c6b 100%) !important;
+  padding: 80px 20px;
+}
+
+/* ---------- 10. Kenya Section DIV ---------- */
+/* DIV 7: kenya-section — dark themed section */
+.kenya-section {
+  background: linear-gradient(135deg, #0a2846 0%, #1a3c5e 50%, #0d3d5c 100%) !important;
+  padding: 80px 20px;
+}
+
+.kenya-grid {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  margin-top: 30px;
+}
+
+.kenya-text {
+  flex: 1;
+}
+
+.kenya-text p {
+  font-family: 'Lato', Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+  line-height: 1.75;
+}
+
+.kenya-text strong {
+  color: #f4a261;
+}
+
+.kenya-img-side {
+  flex: 0 0 320px;
+}
+
+.kenya-photo {
+  width: 100%;
+  border-radius: 12px;
+  border: 4px solid rgba(244, 162, 97, 0.4);
+  box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+}
+
+/* Kenya Stats Row */
+.kenya-stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.stat-box {
+  flex: 1;
+  text-align: center;
+  background-color: rgba(255,255,255,0.08);
+  border: 1px solid rgba(244, 162, 97, 0.25);
+  border-radius: 10px;
+  padding: 18px 10px;
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #f4a261;
+}
+
+.stat-label {
+  display: block;
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- 9. Video Section ---------- */
+.video-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 45px rgba(0,0,0,0.2);
+  border: 4px solid white;
+}
+
+.video-wrapper iframe {
+  display: block;
+}
+
+/* ---------- 10. Tableau Section ---------- */
+.tableau-wrapper {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  background: white;
+  min-height: 520px;
+}
+
+.tableau-note {
+  font-family: 'Lato', Arial, sans-serif;
+  color: #666;
+  font-size: 0.88rem;
+  margin-top: 18px;
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tableau-note a {
+  color: #0a2846;
+  font-weight: 700;
+}
+
+.tableau-note a:hover {
+  color: #f4a261;
+}
+
+/* ---------- 11. Back to Top ---------- */
+.back-to-top {
+  display: block;
+  text-align: center;
+  background-color: #f4a261;
+  color: #0a2846;
+  font-family: 'Lato', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 14px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s;
+}
+
+.back-to-top:hover {
+  background-color: #e76f51;
+  color: #ffffff;
+}
+
+/* ---------- 12. Footer ---------- */
+.scratch-footer {
+  background-color: #071828;
+  padding: 40px 20px;
+}
+
+.scratch-footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* STYLE FUNCTION 7: Footer text — font family + color */
+.footer-name {
+  font-family: 'Playfair Display', Georgia, serif;  /* Specifies font family */
+  color: #f4a261;                                    /* Specifies font color */
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-family: 'Lato', Arial, sans-serif;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #f4a261;
+}
+
+.footer-copy {
+  font-family: 'Lato', Arial, sans-serif;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+}
+
+/* ---------- 13. Responsive / Mobile ---------- */
+@media (max-width: 900px) {
+  .about-travel-grid,
+  .kenya-grid {
+    flex-direction: column;
+  }
+
+  .about-travel-img-wrapper,
+  .kenya-img-side {
+    flex: unset;
+    width: 100%;
+  }
+
+  .hero-banner-content h1 {
+    font-size: 2.4rem;
+  }
+
+  .scratch-nav-links {
+    gap: 0;
+  }
+
+  .scratch-nav-links a {
+    padding: 6px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-banner {
+    background-attachment: scroll;
+  }
+
+  .hero-banner-content h1 {
+    font-size: 1.9rem;
+  }
+
+  .section-heading {
+    font-size: 1.6rem;
+  }
+
+  .kenya-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
